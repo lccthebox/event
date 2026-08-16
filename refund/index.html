@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>야구 관람 취소 환불 신청 / Baseball Event Refund Request</title>
+<title>8월 16일 더박스 야구 단관 우취 환불 신청 / TheBox Baseball Rainout Refund Request</title>
 <style>
   :root{
     --navy:#1e3a5f;
@@ -103,7 +103,7 @@
     color:var(--sub);
     margin:4px 0 0;
   }
-  input[type=text], input[type=tel]{
+  input[type=text], input[type=tel], select{
     width:100%;
     padding:10px 12px;
     border:1px solid var(--line);
@@ -112,11 +112,21 @@
     color:var(--ink);
     background:#fbfcfd;
     transition:border-color .15s ease;
+    font-family:inherit;
   }
-  input:focus{
+  select{
+    appearance:none;
+    -webkit-appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236b7280'><path d='M5.5 7.5l4.5 4.5 4.5-4.5' stroke='%236b7280' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat:no-repeat;
+    background-position:right 12px center;
+    padding-right:32px;
+    cursor:pointer;
+  }
+  input:focus, select:focus{
     outline:none;
     border-color:var(--navy);
-    background:#fff;
+    background-color:#fff;
   }
   .bank-row{
     display:grid;
@@ -131,6 +141,13 @@
     color:var(--sub);
     font-weight:500;
     margin-bottom:4px;
+  }
+  .bank-other{
+    margin-top:8px;
+    display:none;
+  }
+  .bank-other.show{
+    display:block;
   }
   .multi-box{
     border:1px dashed var(--line);
@@ -188,7 +205,6 @@
     display:none;
   }
   .status.show{display:block;}
-  .status.ok{color:var(--ok);}
   .status.err{color:var(--err);}
   .footnote{
     text-align:center;
@@ -196,12 +212,59 @@
     color:var(--sub);
     margin-top:20px;
   }
-  [data-i18n]{display:none;}
-  [data-i18n].active{display:inline;}
-  label[data-i18n], .desc[data-i18n], h1[data-i18n], .hint[data-i18n], .checkbox-row span[data-i18n], .status[data-i18n]{display:none;}
-  label[data-i18n].active, .desc[data-i18n].active, h1[data-i18n].active, .hint[data-i18n].active, .checkbox-row span[data-i18n].active{display:block;}
-  .checkbox-row span[data-i18n].active{display:inline;}
-  label[data-i18n].active{display:block;}
+
+  /* success view */
+  .success-view{
+    display:none;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:40px 24px;
+    text-align:center;
+  }
+  .success-view.show{
+    display:block;
+  }
+  .success-icon{
+    width:52px;
+    height:52px;
+    border-radius:50%;
+    background:#e3f3ea;
+    color:var(--ok);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 16px;
+    font-size:26px;
+  }
+  .success-view h2{
+    font-size:18px;
+    margin:0 0 8px;
+    color:var(--navy-deep);
+  }
+  .success-view p{
+    font-size:14px;
+    color:var(--sub);
+    margin:0 0 24px;
+  }
+  button.again{
+    padding:11px 20px;
+    background:#fff;
+    color:var(--navy);
+    border:1px solid var(--navy);
+    border-radius:8px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  button.again:hover{
+    background:var(--blue-mist);
+  }
+
+  [hidden]{
+    display:none !important;
+  }
 </style>
 </head>
 <body>
@@ -213,11 +276,12 @@
   </div>
 
   <header>
-    <span class="badge">더박스 THE BOX</span>
-    <h1 data-i18n="ko" class="active">야구 관람 취소 환불 신청</h1>
-    <h1 data-i18n="en">Baseball Event Refund Request</h1>
-    <p class="desc" data-i18n="ko" class="active">우천으로 단체 야구 관람 일정이 전체 취소되었습니다. 환불을 위해 아래 정보를 입력해 주세요.</p>
-    <p class="desc" data-i18n="en">The group baseball event has been fully cancelled due to rain. Please fill in the information below so we can process your refund.</p>
+    <span class="badge" data-i18n="ko">더박스</span>
+    <span class="badge" data-i18n="en" hidden>TheBox</span>
+    <h1 data-i18n="ko">8월 16일 더박스 야구 단관 우취 환불 신청</h1>
+    <h1 data-i18n="en" hidden>TheBox Baseball Group Outing Rainout Refund Request (Aug 16)</h1>
+    <p class="desc" data-i18n="ko">우천으로 8월 16일 단체 야구 관람 일정이 전체 취소되었습니다. 환불을 위해 아래 정보를 입력해 주세요.</p>
+    <p class="desc" data-i18n="en" hidden>The Aug 16 TheBox group baseball outing was fully cancelled due to rain. Please fill in the information below so we can process your refund.</p>
   </header>
 
   <form id="refund-form" action="https://script.google.com/macros/s/AKfycbzj_qDJILWpCQ1nctj2U1tPgwFEK1BuzkvNBHoXqVUg2JVhI8d4IF32j9PVKs5YdPHeDw/exec" method="POST">
@@ -225,35 +289,53 @@
     <input type="hidden" name="is_multi" id="is_multi" value="no">
 
     <div class="field">
-      <label data-i18n="ko" class="active">신청자명<span class="req">*</span></label>
-      <label data-i18n="en">Applicant Name<span class="req">*</span></label>
+      <label data-i18n="ko">신청자명<span class="req">*</span></label>
+      <label data-i18n="en" hidden>Applicant Name<span class="req">*</span></label>
       <input type="text" name="applicant_name" required>
     </div>
 
     <div class="field">
-      <label data-i18n="ko" class="active">입금자명 (입금했을 때의 이름)<span class="req">*</span></label>
-      <label data-i18n="en">Depositor Name (name used when paying)<span class="req">*</span></label>
+      <label data-i18n="ko">입금자명 (입금했을 때의 이름)<span class="req">*</span></label>
+      <label data-i18n="en" hidden>Depositor Name (name used when paying)<span class="req">*</span></label>
       <input type="text" name="depositor_name" required>
     </div>
 
     <div class="field">
-      <label data-i18n="ko" class="active">환불받을 계좌 정보<span class="req">*</span></label>
-      <label data-i18n="en">Refund Account Info<span class="req">*</span></label>
+      <label data-i18n="ko">환불받을 계좌 정보<span class="req">*</span></label>
+      <label data-i18n="en" hidden>Refund Account Info<span class="req">*</span></label>
       <div class="bank-row">
-        <div>
-          <label data-i18n="ko" class="active">은행명</label>
-          <label data-i18n="en">Bank Name</label>
-          <input type="text" name="bank_name" required>
+        <div class="full">
+          <label data-i18n="ko">은행명</label>
+          <label data-i18n="en" hidden>Bank Name</label>
+          <select name="bank_name" id="bank-select" required onchange="toggleBankOther(this)">
+            <option value="" disabled selected data-i18n-placeholder></option>
+            <option value="국민은행">국민은행 / KB Kookmin Bank</option>
+            <option value="신한은행">신한은행 / Shinhan Bank</option>
+            <option value="우리은행">우리은행 / Woori Bank</option>
+            <option value="하나은행">하나은행 / Hana Bank</option>
+            <option value="NH농협은행">NH농협은행 / NH Nonghyup Bank</option>
+            <option value="IBK기업은행">IBK기업은행 / IBK Industrial Bank</option>
+            <option value="카카오뱅크">카카오뱅크 / Kakao Bank</option>
+            <option value="토스뱅크">토스뱅크 / Toss Bank</option>
+            <option value="새마을금고">새마을금고 / MG Community Credit</option>
+            <option value="우체국">우체국 / Korea Post</option>
+            <option value="기타">기타 / Other</option>
+          </select>
+          <div class="bank-other" id="bank-other">
+            <input type="text" name="bank_name_other" id="bank-other-input" data-i18n-ph-ko="은행명을 직접 입력해주세요" data-i18n-ph-en="Please type your bank name">
+          </div>
         </div>
         <div>
-          <label data-i18n="ko" class="active">예금주</label>
-          <label data-i18n="en">Account Holder</label>
+          <label data-i18n="ko">예금주</label>
+          <label data-i18n="en" hidden>Account Holder</label>
           <input type="text" name="account_holder" required>
         </div>
-        <div class="full">
-          <label data-i18n="ko" class="active">계좌번호</label>
-          <label data-i18n="en">Account Number</label>
-          <input type="text" name="account_number" required>
+        <div>
+          <label data-i18n="ko">계좌번호</label>
+          <label data-i18n="en" hidden>Account Number</label>
+          <input type="text" name="account_number" id="account-number-input" required data-i18n-ph-ko="'-' 없이 숫자만 입력" data-i18n-ph-en="Numbers only, no dashes">
+          <p class="hint" data-i18n="ko">'-' 없이 숫자만 입력해주세요.</p>
+          <p class="hint" data-i18n="en" hidden>Please enter numbers only, without dashes ('-').</p>
         </div>
       </div>
     </div>
@@ -262,21 +344,21 @@
       <div class="multi-box">
         <label class="checkbox-row" for="multi-check">
           <input type="checkbox" id="multi-check" onchange="toggleMulti(this)">
-          <span data-i18n="ko" class="active">2명분 이상을 한꺼번에 입금했어요</span>
-          <span data-i18n="en">I paid for 2 or more people in one payment</span>
+          <span data-i18n="ko">2명분 이상을 한꺼번에 입금했어요</span>
+          <span data-i18n="en" hidden>I paid for 2 or more people in one payment</span>
         </label>
-        <p class="hint" data-i18n="ko" class="active">해당하시는 분은 아래에 입금한 총 금액과 함께 입금한 인원 전체의 이름을 적어주세요.</p>
-        <p class="hint" data-i18n="en">If this applies to you, please enter the total amount paid and the full names of everyone included in that payment.</p>
+        <p class="hint" data-i18n="ko">해당하시는 분은 아래에 입금한 총 금액과 함께 입금한 인원 전체의 이름을 적어주세요.</p>
+        <p class="hint" data-i18n="en" hidden>If this applies to you, please enter the total amount paid and the full names of everyone included in that payment.</p>
 
         <div class="multi-extra" id="multi-extra">
           <div class="field">
-            <label data-i18n="ko" class="active">총 입금 금액</label>
-            <label data-i18n="en">Total Amount Paid</label>
+            <label data-i18n="ko">총 입금 금액</label>
+            <label data-i18n="en" hidden>Total Amount Paid</label>
             <input type="text" name="multi_total_amount" placeholder="예: 20,000원 / e.g. 20,000 KRW">
           </div>
           <div class="field">
-            <label data-i18n="ko" class="active">함께 입금한 인원 이름 (전체)</label>
-            <label data-i18n="en">Names of All People Included</label>
+            <label data-i18n="ko">함께 입금한 인원 이름 (전체)</label>
+            <label data-i18n="en" hidden>Names of All People Included</label>
             <input type="text" name="multi_names" placeholder="예: 홍길동, 김철수">
           </div>
         </div>
@@ -284,27 +366,44 @@
     </div>
 
     <button type="submit" class="submit" id="submit-btn">
-      <span data-i18n="ko" class="active">제출하기</span>
-      <span data-i18n="en">Submit</span>
+      <span data-i18n="ko">제출하기</span>
+      <span data-i18n="en" hidden>Submit</span>
     </button>
 
     <div class="status" id="status"></div>
   </form>
 
-  <p class="footnote" data-i18n="ko" class="active">문의사항은 담당자에게 연락 주세요.</p>
-  <p class="footnote" data-i18n="en">For questions, please contact us directly.</p>
+  <div class="success-view" id="success-view">
+    <div class="success-icon">✓</div>
+    <h2 data-i18n="ko">제출이 완료되었습니다</h2>
+    <h2 data-i18n="en" hidden>Submitted Successfully</h2>
+    <p data-i18n="ko">환불 신청이 정상적으로 접수되었습니다. 감사합니다!</p>
+    <p data-i18n="en" hidden>Your refund request has been received. Thank you!</p>
+    <button type="button" class="again" onclick="showFormAgain()">
+      <span data-i18n="ko">추가 제출하기</span>
+      <span data-i18n="en" hidden>Submit Another Response</span>
+    </button>
+  </div>
+
+  <p class="footnote" data-i18n="ko">문의사항은 담당자에게 연락 주세요.</p>
+  <p class="footnote" data-i18n="en" hidden>For questions, please contact us directly.</p>
 
 </div>
 
 <script>
 function setLang(lang){
   document.querySelectorAll('[data-i18n]').forEach(function(el){
-    el.classList.toggle('active', el.getAttribute('data-i18n') === lang);
+    el.hidden = (el.getAttribute('data-i18n') !== lang);
   });
   document.getElementById('btn-ko').classList.toggle('active', lang === 'ko');
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.documentElement.lang = lang;
-  document.getElementById('refund-form').dataset.lang = lang;
+
+  var otherInput = document.getElementById('bank-other-input');
+  otherInput.placeholder = lang === 'ko' ? otherInput.dataset.i18nPhKo : otherInput.dataset.i18nPhEn;
+
+  var acctInput = document.getElementById('account-number-input');
+  acctInput.placeholder = lang === 'ko' ? acctInput.dataset.i18nPhKo : acctInput.dataset.i18nPhEn;
 }
 
 function toggleMulti(checkbox){
@@ -312,9 +411,24 @@ function toggleMulti(checkbox){
   document.getElementById('is_multi').value = checkbox.checked ? 'yes' : 'no';
 }
 
+function toggleBankOther(select){
+  var show = select.value === '기타';
+  var wrap = document.getElementById('bank-other');
+  var input = document.getElementById('bank-other-input');
+  wrap.classList.toggle('show', show);
+  input.required = show;
+  if(!show){ input.value = ''; }
+}
+
+function showFormAgain(){
+  document.getElementById('success-view').classList.remove('show');
+  document.getElementById('refund-form').style.display = 'block';
+}
+
 const form = document.getElementById('refund-form');
 const statusEl = document.getElementById('status');
 const submitBtn = document.getElementById('submit-btn');
+const successView = document.getElementById('success-view');
 
 form.addEventListener('submit', async function(e){
   e.preventDefault();
@@ -330,13 +444,14 @@ form.addEventListener('submit', async function(e){
       body: new FormData(form)
     });
 
-    statusEl.textContent = lang === 'ko'
-      ? '제출이 완료되었습니다. 감사합니다!'
-      : 'Submitted successfully. Thank you!';
-    statusEl.className = 'status show ok';
     form.reset();
     document.getElementById('multi-extra').classList.remove('show');
     document.getElementById('is_multi').value = 'no';
+    document.getElementById('bank-other').classList.remove('show');
+    statusEl.className = 'status';
+
+    form.style.display = 'none';
+    successView.classList.add('show');
   } catch(err){
     statusEl.textContent = lang === 'ko'
       ? '제출 중 오류가 발생했습니다. 다시 시도해 주세요.'
@@ -346,6 +461,8 @@ form.addEventListener('submit', async function(e){
     submitBtn.disabled = false;
   }
 });
+
+setLang('ko');
 </script>
 
 </body>
